@@ -1,0 +1,43 @@
+name: Java CI with Gradle
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        
+    - name: Build with Gradle
+      uses: gradle/gradle-build-action@v2
+      with:
+        arguments: build
+
+    # This creates the distribution zip file
+    - name: Create Distribution
+      uses: gradle/gradle-build-action@v2
+      with:
+        arguments: distZip
+
+    - name: Run Tests
+      uses: gradle/gradle-build-action@v2
+      with:
+        arguments: test
+
+    # This saves the zip file so you can download it later
+    - name: Upload Application Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: sudoku-app
+        path: app/build/distributions/app.zip
