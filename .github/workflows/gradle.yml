@@ -35,9 +35,9 @@ jobs:
       with:
         arguments: test
 
-    # This saves the zip file so you can download it later
+    # This saves the zip file 
     - name: Upload Application Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: sudoku-app
         path: app/build/distributions/app.zip
